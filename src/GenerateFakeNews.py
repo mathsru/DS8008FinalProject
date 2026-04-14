@@ -37,7 +37,7 @@ for File in os.listdir(InputFolder):
         Text = Text.replace("<br />"," ").replace("<br>"," ")
         FakeNewsArticles.append(Text)
 
-print(FakeNewsArticles[0])
+#print(FakeNewsArticles[0])
 
 #Before proceeding unto LDA and topic extraction from the fake news articles, using SPACY NER in order to extract all names
 #and put them all together into a dictionairy
@@ -136,10 +136,10 @@ Model = AutoModelForCausalLM.from_pretrained(
 )
 #Generates however many random fake articles randomly selecting from list of indeitifed people and topics for the prompt.
 #And saves the generated fake news article to the train/FakeNewsArticlesArtificiallyGeneratedTraining
-for i in range(5):
+for i in range(43,4000):
     #Randomly selecting 2-5 people from the set of people identified in the fake news using NER
     NumPeople = random.randint(2,5)
-    SelectedPeople = random.sample(NamedPeople,NumPeople)
+    SelectedPeople = random.sample(list(NamedPeople),NumPeople)
     #Randomly selecting 1/200 identified topics
     RandomTopic = random.choice(DocumentTopics)
 
@@ -153,12 +153,14 @@ for i in range(5):
     And make up a logical story or argument or drama or event involving the listed people and these topic words:
     {RandomTopic}
 
-    The people may have an opinion about the topic words. The topic words may relate to something happening between the people, the topic words
-    may pertain to one of the people involved and the other are commenting on it. The topic words may the cause of an argument between people.
 
     Write 3-5 Paragraphs using the topic words and the people in a logical manner. Try to avoid repeats.
     You may choose to make it in gossip news style or make it more formal rumours. Or a formal event that you are reporting on.
-    It may also be an anouncement or just news.SelectedPeople
+    It may also be an anouncement or just news.
+
+    Make it anywhere between 600-1200 words.
+
+    Commit to the chosen style.
     """
 
     #Final step is to generate the text by inputting the prompt into LLAMA 3
@@ -174,7 +176,7 @@ for i in range(5):
     
     FilePath = os.path.join(OutputFolder,f"FakeNewsArticleGenerated{i}.txt")
 
-    with open(FilePath,"w",encoding="utf-8") as f:
+    with open(FilePath,"a",encoding="utf-8") as f:
         f.write(CompletelyFakeArticle)
 
 
