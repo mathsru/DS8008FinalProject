@@ -11,7 +11,7 @@ ACTIONS = [-20, 0, 20]   # decrease, stay, increase
 MIN_ARTICLES = 0
 MAX_ARTICLES = 200
 
-EPISODES = 10
+EPISODES = 5
 ALPHA = 0.1   # learning rate
 GAMMA = 0.9   # discount factor
 EPSILON = 0.3 # exploration

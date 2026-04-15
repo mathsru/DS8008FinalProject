@@ -13,8 +13,8 @@ def TrainAndEvaluateLSTM(AllArticles, epochs=5):
 
     AllTestArticles = []
 
-    RealTestPath = "Data/test/RealNewsArticlesTestingSet/"
-    FakeTestPath = "Data/test/FakeNewsArticlesTestingSet/"
+    RealTestPath = "../Data/test/RealNewsArticlesTestingSet/"
+    FakeTestPath = "../Data/test/FakeNewsArticlesTestingSet/"
 
     # Real = 0
     for file in os.listdir(RealTestPath):
@@ -83,18 +83,35 @@ def TrainAndEvaluateLSTM(AllArticles, epochs=5):
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     loss_fn = nn.CrossEntropyLoss()
 
+    batch_size = 32
+
     # TRAINING
     for epoch in range(epochs):
         model.train()
 
-        outputs = model(X_train)
-        loss = loss_fn(outputs, y_train)
+        # Shuffle data
+        indices = torch.randperm(len(X_train))
+        X_train_shuffled = X_train[indices]
+        y_train_shuffled = y_train[indices]
 
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
+        epoch_loss = 0
+        num_batches = 0
 
-        print(f"Epoch {epoch+1}, Loss: {loss.item():.4f}")
+        for i in range(0, len(X_train), batch_size):
+            X_batch = X_train_shuffled[i:i+batch_size]
+            y_batch = y_train_shuffled[i:i+batch_size]
+
+            outputs = model(X_batch)
+            loss = loss_fn(outputs, y_batch)
+
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            epoch_loss += loss.item()
+            num_batches += 1
+
+        print(f"Epoch {epoch+1}, Loss: {epoch_loss / num_batches:.4f}")
 
     # EVALUATION
     model.eval()
