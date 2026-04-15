@@ -5,6 +5,7 @@ def TrainAndEvaluateLSTM(AllArticles, epochs=5):
     import os
     import random
     from collections import Counter
+    from torch.utils.data import DataLoader, TensorDataset
 
     random.shuffle(AllArticles)
 
@@ -86,8 +87,20 @@ def TrainAndEvaluateLSTM(AllArticles, epochs=5):
     batch_size = 32
 
     # TRAINING
+    #outputs = model(X_train)
+    #loss = loss_fn(outputs, y_train)
+    #Above 2 lines are too heavy, can't load all the articles at once or we just run out of memory have to batch it
+    TrainDataset  = TensorDataset(X_train,y_train)
+    BatchSize = 128
+    TrainLoader = DataLoader(TrainDataset,batch_size=BatchSize,shuffle=True)
+    
     for epoch in range(epochs):
         model.train()
+        TotalLoss = 0
+
+        for BatchX, BatchY in TrainLoader:
+            BatchX = BatchX.to(device)
+            BatchY = BatchY.to(device)
 
         # Shuffle data
         indices = torch.randperm(len(X_train))
@@ -107,19 +120,34 @@ def TrainAndEvaluateLSTM(AllArticles, epochs=5):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
 
             epoch_loss += loss.item()
             num_batches += 1
 
         print(f"Epoch {epoch+1}, Loss: {epoch_loss / num_batches:.4f}")
 
-    # EVALUATION
+    # EVALUATION, similarily adding batching here
+    TestDataset = TensorDataset(X_test,y_test)
+    TestLoader = DataLoader(TestDataset,batch_size=128)
+
     model.eval()
+    correct = 0
+    total = 0
+
     with torch.no_grad():
-        outputs = model(X_test)
-        preds = torch.argmax(outputs, dim=1)
-        accuracy = (preds == y_test).float().mean()
+        for BatchX, BatchY in TestLoader:
+            BatchX = BatchX.to(device)
+            BatchY = BatchY.to(device)
 
-    print(f"Test Accuracy: {accuracy.item():.4f}")
+            outputs = model(BatchX)
+            preds = torch.argmax(outputs, dim=1)
 
-    return accuracy.item()
+            correct += (preds == BatchY).sum().item()
+            total += BatchY.size(0)
+
+    accuracy = correct/total
+    print(f"Test Accuracy: {accuracy:.4f}")
+    return accuracy

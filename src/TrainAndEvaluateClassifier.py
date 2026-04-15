@@ -64,8 +64,8 @@ def TrainAndEvaluateClassifer(NumberOfArtificialArticlesTouse,UseAll,NumberOfRea
             Text = File.read()
             Text = Text.replace("<br />"," ").replace("<br>"," ")
             AllArticles.append((Text,1)) #Appending with label 1 for fake article.
+
     return AllArticles
-    #AllArticles[] now filled with Column 1 = Article Text Column 2 = Associated Label
 
 
 
