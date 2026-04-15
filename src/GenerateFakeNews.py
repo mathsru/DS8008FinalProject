@@ -136,7 +136,7 @@ Model = AutoModelForCausalLM.from_pretrained(
 )
 #Generates however many random fake articles randomly selecting from list of indeitifed people and topics for the prompt.
 #And saves the generated fake news article to the train/FakeNewsArticlesArtificiallyGeneratedTraining
-for i in range(43,4000):
+for i in range(44,4000):
     #Randomly selecting 2-5 people from the set of people identified in the fake news using NER
     NumPeople = random.randint(2,5)
     SelectedPeople = random.sample(list(NamedPeople),NumPeople)
@@ -158,21 +158,24 @@ for i in range(43,4000):
     You may choose to make it in gossip news style or make it more formal rumours. Or a formal event that you are reporting on.
     It may also be an anouncement or just news.
 
-    Make it anywhere between 600-1200 words.
+    Make it about 400 words.
 
     Commit to the chosen style.
+
+    Requirement: Only write the article, don't write anything else in your output.
     """
 
     #Final step is to generate the text by inputting the prompt into LLAMA 3
     ModelInput = Tokenizer(RandomPrompt,return_tensors="pt").to(Model.device)
     Output = Model.generate(
         **ModelInput,
-        max_new_tokens=1200,
+        max_new_tokens=400,
         temperature=0.8,
         top_p=0.9,
         do_sample=True
         )
     CompletelyFakeArticle = Tokenizer.decode(Output[0],skip_special_tokens=True)
+    CompletelyFakeArticle = CompletelyFakeArticle[len(RandomPrompt):].strip() #Removing prompt from start of generated article.
     
     FilePath = os.path.join(OutputFolder,f"FakeNewsArticleGenerated{i}.txt")
 
