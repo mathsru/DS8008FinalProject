@@ -1,4 +1,4 @@
-#Alex Eliseev 501093338
+#Alex Eliseev
 #This is python script file that reads the URLs for real news articles from the gossipcop_real.csv downloaded from kaggle which contains
 #over 15000 links to real news articles that were published. It scrapes the news page, saving its title + text body into a text document
 #in the FakeNewsArticles folder.

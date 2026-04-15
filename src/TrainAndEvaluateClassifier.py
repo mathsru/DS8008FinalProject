@@ -66,6 +66,9 @@ def TrainAndEvaluateClassifer(NumberOfArtificialArticlesTouse,UseAll,NumberOfRea
             AllArticles.append((Text,1)) #Appending with label 1 for fake article.
 
     #AllArticles[] now filled with Column 1 = Article Text Column 2 = Associated Label
+
+
+
      
 
 
