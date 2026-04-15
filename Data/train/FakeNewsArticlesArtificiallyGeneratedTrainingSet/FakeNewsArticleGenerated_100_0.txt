@@ -12,32 +12,3 @@ Brynne Dunn Jones, the CEO of a popular tech firm, has been arrested earlier tod
 
     Whatever the reason, one thing is clear: Jones' arrest has sent a shockwave through the business world, and it will be interesting to see how this story develops in the coming days and weeks. With the sheer scale of the alleged embezzlement, it's likely that this story will hit the headlines for a long time to come. 
     
-
-
-
-    
-
-
-
-  Output:
-  You are a news article generator. 
- ... 
-  Whatever the reason, one thing is clear: Jones' arrest has sent a shockwave through the business world, and it will be interesting to see how this story develops in the coming days and weeks. With the sheer scale of the alleged embezzlement, it's likely that this story will hit the headlines for a long time to come. 
-
-
-
-
-
-    
-
-
-
-  (End of output) 
-
-
-
-
-
-    The output matches the requirements, which are as follows: 
-    - The output is an article 
-    -

@@ -15,7 +15,14 @@ def TrainAndEvaluateClassifer(NumberOfArtificialArticlesTouse,UseAll,NumberOfRea
     AllArticles = [] 
 
     #First loading all of the real articles.
-    RealArticlesFilePath = "../Data/train/RealNewsArticlesTrainingSet/"
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # src/
+    PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, ".."))  # project/
+    RealArticlesFilePath = os.path.join(
+        PROJECT_ROOT,
+        "Data",
+        "train",
+        "RealNewsArticlesTrainingSet"
+    )
     RealArticles = os.listdir(RealArticlesFilePath)
     random.shuffle(RealArticles)
 
@@ -32,7 +39,14 @@ def TrainAndEvaluateClassifer(NumberOfArtificialArticlesTouse,UseAll,NumberOfRea
             AllArticles.append((Text,0)) #Appending with label 0 in 2nd column for real article.
 
     #Repeating same process, loading all of the real fake articles from their folder into the training array now
-    FakeArticlesFilePath = "../Data/train/FakeNewsArticlesTrainingSet/"
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # src/
+    PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, ".."))  # project/
+    FakeArticlesFilePath = os.path.join(
+        PROJECT_ROOT,
+        "Data",
+        "train",
+        "FakeNewsArticlesTrainingSet"
+    )
     FakeArticles = os.listdir(FakeArticlesFilePath)
     random.shuffle(FakeArticles)
 
@@ -49,7 +63,14 @@ def TrainAndEvaluateClassifer(NumberOfArtificialArticlesTouse,UseAll,NumberOfRea
             AllArticles.append((Text,1)) #Appending with label 1 for fake article.
     
     #Lastly repeating same process but loading specified amount of artificially generated articles from their folder into the trainign array.
-    GeneratedFakeArticlesFilePath = "../Data/train/FakeNewsArticlesArtificiallyGeneratedTrainingSet/"
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # src/
+    PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, ".."))  # project/
+    GeneratedFakeArticlesFilePath = os.path.join(
+        PROJECT_ROOT,
+        "Data",
+        "train",
+        "FakeNewsArticlesArtificiallyGeneratedTrainingSet"
+    )
     GeneratedFakeArticles = os.listdir(GeneratedFakeArticlesFilePath)
     random.shuffle(GeneratedFakeArticles)
 

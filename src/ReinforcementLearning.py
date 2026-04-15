@@ -9,9 +9,9 @@ from TrainAndEvaluateLSTM import TrainAndEvaluateLSTM
 # PARAMETERS
 ACTIONS = [-20, 0, 20]   # decrease, stay, increase
 MIN_ARTICLES = 0
-MAX_ARTICLES = 200
+MAX_ARTICLES = 500
 
-EPISODES = 5
+EPISODES = 3
 ALPHA = 0.1   # learning rate
 GAMMA = 0.9   # discount factor
 EPSILON = 0.3 # exploration
@@ -39,7 +39,7 @@ def step(state, action):
 
 # TRAIN Q-LEARNING
 def train_q_learning():
-    state = 50  # start with 50 synthetic articles
+    state = 150  # start with 50 synthetic articles
 
     for episode in range(EPISODES):
         print(f"\n=== Episode {episode+1} ===")

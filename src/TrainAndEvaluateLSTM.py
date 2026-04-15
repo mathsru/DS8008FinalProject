@@ -13,9 +13,22 @@ def TrainAndEvaluateLSTM(AllArticles, epochs=5):
     train_labels = [row[1] for row in AllArticles]
 
     AllTestArticles = []
-
-    RealTestPath = "../Data/test/RealNewsArticlesTestingSet/"
-    FakeTestPath = "../Data/test/FakeNewsArticlesTestingSet/"
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # src/
+    PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, ".."))  # project/
+    RealTestPath = os.path.join(
+        PROJECT_ROOT,
+        "Data",
+        "test",
+        "RealNewsArticlesTestingSet"
+    )
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # src/
+    PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, ".."))  # project/
+    FakeTestPath = os.path.join(
+        PROJECT_ROOT,
+        "Data",
+        "test",
+        "FakeNewsArticlesTestingSet"
+    )
 
     # Real = 0
     for file in os.listdir(RealTestPath):
@@ -96,38 +109,23 @@ def TrainAndEvaluateLSTM(AllArticles, epochs=5):
     
     for epoch in range(epochs):
         model.train()
-        TotalLoss = 0
+        total_loss = 0
 
         for BatchX, BatchY in TrainLoader:
             BatchX = BatchX.to(device)
             BatchY = BatchY.to(device)
 
-        # Shuffle data
-        indices = torch.randperm(len(X_train))
-        X_train_shuffled = X_train[indices]
-        y_train_shuffled = y_train[indices]
-
-        epoch_loss = 0
-        num_batches = 0
-
-        for i in range(0, len(X_train), batch_size):
-            X_batch = X_train_shuffled[i:i+batch_size]
-            y_batch = y_train_shuffled[i:i+batch_size]
-
-            outputs = model(X_batch)
-            loss = loss_fn(outputs, y_batch)
-
             optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
+
+            outputs = model(BatchX) 
+            loss = loss_fn(outputs, BatchY)
+
             loss.backward()
             optimizer.step()
 
-            epoch_loss += loss.item()
-            num_batches += 1
+            total_loss += loss.item()
 
-        print(f"Epoch {epoch+1}, Loss: {epoch_loss / num_batches:.4f}")
+        print(f"Epoch {epoch+1}, Loss: {total_loss:.4f}")
 
     # EVALUATION, similarily adding batching here
     TestDataset = TensorDataset(X_test,y_test)
