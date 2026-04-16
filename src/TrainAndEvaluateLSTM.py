@@ -1,5 +1,5 @@
 #divya bharathi
-def TrainAndEvaluateLSTM(AllArticles, epochs=5):
+def TrainAndEvaluateLSTM(AllArticles, epochs=15):
     import torch
     import torch.nn as nn
     import os
